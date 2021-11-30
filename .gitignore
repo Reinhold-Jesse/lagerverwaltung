@@ -1,3 +1,4 @@
-datenbank/
+datenbank/*
 example
 venv
+.idea
