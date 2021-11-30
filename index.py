@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, escape, session, fl
 from datetime import datetime
 import os
 from functionen import reinhold
+from functionen import abed
 
 # eigenes datanbank modul einbinden (Frank Hoffmann)
 from functionen import datenbank
@@ -16,7 +17,15 @@ app.secret_key = "\xeaR\xab\xdar\xc6\xcdDQO\xd1\xdaq\xff\xfaT\x91\xcf\xb9\n\x05t
 def index():
     # Alle Artikeln anzeigen
     # übergibt die anfrage weiter das das Template
-    return render_template('index.html')
+
+    print('Startseite start')
+    print('Preis alle Artikel in der Datenbank: ', abed.getTotalPrice(), '€')
+    print('Startseite ende')
+    temp = {
+        'total_price':abed.getTotalPrice()
+    }
+
+    return render_template('index.html', content=temp)
 
 
 @app.route('/artikel')
@@ -44,6 +53,8 @@ def artikel_create():
     # Eine neues Artikel anlegen
     return render_template('artikel/create.html')
 
+
+
 @app.route('/artikel/store', methods=['POST'])
 def artikel_store():
     #speichert die daten in die Datenbank
@@ -68,6 +79,8 @@ def artikel_store():
     datenbank.verbindungSchliessen(connection)
     flash(u'Artikel wurde erfolgreich gespeichert.', 'successe')
     return redirect('/artikel')
+
+
 
 @app.route('/artikel/<int:id>', methods=['GET','POST'])
 def artikel_edit_update(id):
@@ -156,6 +169,8 @@ def logfile_index():
 
     return render_template('logfile/index.html', content=content)
 
+
+
 @app.route('/order')
 def order():
     # Zeigt eine Tabele von Artikeln aus der Datenbank
@@ -196,21 +211,47 @@ def order_add():
         session['order'] = order
 
 
-
-
-    print(session)
+    #print(session)
     #return 'Artikel in den wahren korb'
     return redirect('/order')
 
 
 @app.route('/car')
 def car():
-    if 'articels' in session:
-        print(session)
-    else:
-        # wahrenkorb anzeigen
-        print('wahren korb anzeigen')
-        return render_template('car.html')
+    car = []
+    if 'order' in session:
+        #Artikeln wurder in der Session gefunden.
+
+        for element in session['order']:
+            # Datenbank Verbindung Herstellen
+            connection = datenbank.verbindungHerstellen()
+            # cursor
+            zeiger = datenbank.cursorErstellen(connection)
+            # SQL anweisung
+            sql = "SELECT * FROM articels WHERE id='"+str(element['id'])+"' ;"
+            datenbank.anweisungAusfuehren(zeiger, sql)
+            # Daten auslesen
+            content = datenbank.ergebnisHolen(zeiger)
+            # Datenbank Verbindung schließen
+            datenbank.verbindungSchliessen(connection)
+
+            temp = {
+                'count': element['count'],
+                'articel': content
+            }
+
+            # fügt Artikel der Car variable
+            car.append(temp)
+
+            #gesammt preis ermitteln
+            #total = temp['count'] + temp['articel'][4]
+            print(temp)
+
+
+    print(car)
+
+    # wahrenkorb anzeigen
+    return render_template('car.html', content=car)
 
 # wahren korb erstellen
 # if 'name' in session:
