@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category == 'successe'%}
+                    <div class="bg-green-500" id="message">
+                      <div class="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
+                        <div class="flex items-center justify-between flex-wrap">
+                          <div class="w-0 flex-1 flex items-center">
+                            <p class="ml-3 font-medium text-white truncate">{{ message }}</p>
+                          </div>
+                          <div class="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
+                            <button type="button" class="-mr-1 flex p-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2" onclick="massage_close()">
+                              <span class="sr-only">Dismiss</span>
+                              <!-- Heroicon name: outline/x -->
+                              <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="container mx-auto flex justify-between p-7">
+        <a href="/">
+            logo
+        </a>
+        <nav class="flex gap-4">
+            <a href="/" class="inline-block px-2 text-gray-500 hover:text-blue-500">Startseite</a>
+            <a href="/artikel" class="inline-block px-2 text-gray-500 hover:text-blue-500">Lager</a>
+            <a href="/logfile" class="inline-block px-2 text-gray-500 hover:text-blue-500">Logfile</a>
+             <a href="/order" class="inline-block px-2 text-gray-500 hover:text-blue-500">Auftrag erfassen</a>
+            <a href="/car" class="inline-block px-2 text-gray-500 hover:text-blue-500">Wahrenkorb</a>
+        </nav>
+    </div>
+  <div class="container mx-auto py-12 mt-12">
+      <div class="flex justify-between">
+          <h1 class="text-2xl font-bold">Artikel übersicht</h1>
+          <a href="/artikel/create" class="w-96 inline-block text-center py-2 rounded-md bg-green-500 hover:bg-green-700 text-white transition-all duration-150 ease-in-out">
+              <i class="fas fa-plus mr-2 "></i>Neuen Artikel Anlegen
+          </a>
+      </div>
+      <div class="py-12">
+          <table class="w-full">
+              <thead class="p-2 mb-7">
+                <tr class="border-b">
+                    <td class="w-2/12 text-left uppercase text-gray-400 pb-7">Artikel Nummer</td>
+                    <td class="w-3/12 text-left uppercase text-gray-400 pb-7">Titel</td>
+                    <td class="w-1/12 text-center uppercase text-gray-400 pb-7">Preis</td>
+                    <td class="w-1/12 text-center uppercase text-gray-400 pb-7">Status</td>
+                    <td class="w-1/12 text-center uppercase text-gray-400 pb-7">Anzahl</td>
+                    <td class="w-4/12"></td>
+                </tr>
+              </thead>
+              <tbody class="">
+
+                {% for item in content %}
+
+                    <tr class="hover:bg-gray-200 transition-all duration-150 ease-in-out border-b">
+                        <td class="p-2 text-left">{{item[1]}}</td>
+                        <td class="p-2 text.left">{{item[2]}}</td>
+                        <td class="p-2 text-center">{{"%.2f €" % (item[4])}}</td>
+                        <td class="p-2 text-center">
+                            {% if item[5] == 1 %}
+                                <i class="fas fa-circle text-green-500"></i>
+                            {% else %}
+                                <i class="fas fa-circle text-red-500"></i>
+                            {% endif %}
+                        </td>
+                        <td class="p-2 text-center">{{item[6]}}</td>
+                        <td class="p-2 flex justify-end gap-4">
+                            <a href="/artikel/{{item[0]}}" class="w-10 h-10 bg-blue-500 hover:bg-blue-700 flex justify-center items-center rounded-md text-white transition-all duration-150 ease-in-out">
+                                <i class="far fa-edit"></i>
+                            </a>
+                            <form method="post" action="/artikel/delete">
+                                <input type="hidden" name="id" value="{{item[0]}}">
+                                <button type="submit" class="w-10 h-10 bg-red-500 hover:bg-red-700 flex justify-center items-center rounded-md text-white transition-all duration-150 ease-in-out">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+              </tbody>
+          </table>
+      </div>
+  </div>
+<script>
+    function massage_close(){
+        document.getElementById("message").style.display = "none";
+    }
+</script>
+</body>
+</html>

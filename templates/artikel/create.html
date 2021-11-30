@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto flex justify-between p-7">
+        <a href="/">
+            logo
+        </a>
+        <nav class="flex gap-4">
+            <a href="/" class="inline-block px-2 text-gray-500 hover:text-blue-500">Startseite</a>
+            <a href="/artikel" class="inline-block px-2 text-gray-500 hover:text-blue-500">Lager</a>
+            <a href="/logfile" class="inline-block px-2 text-gray-500 hover:text-blue-500">Logfile</a>
+             <a href="/order" class="inline-block px-2 text-gray-500 hover:text-blue-500">Auftrag erfassen</a>
+            <a href="/car" class="inline-block px-2 text-gray-500 hover:text-blue-500">Wahrenkorb</a>
+        </nav>
+    </div>
+  <div class="container mx-auto mt-12">
+      <div class="flex justify-between">
+          <h1 class="text-2xl font-bold ml-7">Artikel erstellen</h1>
+
+      </div>
+      <form method="post" action="/artikel/store" class="block">
+      <div class="py-12 flex gap-4">
+          <div class="w-7/12 px-7">
+              <div class="my-4">
+                <label class="block mb-2">Artikel Nummer</label>
+                <input type="text" name="item_number" class="block w-full py-2 px-3 rounded-md"/>
+              </div>
+              <div class="my-4">
+                  <label class="block mb-2">Titel</label>
+                  <input type="text" name="title" class="block w-full py-2 px-3 rounded-md"/>
+              </div>
+              <div class="my-4">
+                  <label class="block mb-2">Beschreibung</label>
+                  <textarea name="description" rows="10" cols="10" class="block w-full py-2 px-3 rounded-md"></textarea>
+              </div>
+
+          </div>
+          <div class="w-5/12 px-7">
+              <div class="my-4">
+                  <label class="block mb-2">Preis</label>
+                  <input type="number" name="price" class="block w-full py-2 px-3 rounded-md" min="0.00" max="10000.00" step="0.01"/>
+              </div>
+
+              <div class="my-4">
+                  <label class="block mb-2">Lagerstand</label>
+                  <input type="number" name="inventory" class="block w-full py-2 px-3 rounded-md"/>
+              </div>
+
+              <div class="my-4">
+                <label class="block mb-2">Status</label>
+                  <select name="status" class="block w-full py-2 px-3 rounded-md">
+                      <option value="0">deaktiviert</option>
+                      <option value="1">aktiviert</option>
+                  </select>
+              </div>
+          </div>
+      </div>
+      <div>
+          <button type="submit" class="ml-7 w-96 text-center py-3 bg-green-500 hover:bg-green-700 text-white transition-all duration-150 ease-in-out rounded-md"><i class="far fa-save mr-2"></i>Speichern</button>
+      </div>
+      </form>
+  </div>
+</body>
+</html>
