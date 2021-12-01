@@ -22,7 +22,7 @@ def index():
     print('Preis alle Artikel in der Datenbank: ', abed.getTotalPrice(), '€')
     print('Startseite ende')
     temp = {
-        'total_price':abed.getTotalPrice()
+        'total_price': reinhold.germanPrice(abed.getTotalPrice())
     }
 
     return render_template('index.html', content=temp)
