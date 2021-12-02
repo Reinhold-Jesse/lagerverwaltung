@@ -18,9 +18,10 @@ def index():
     # Alle Artikeln anzeigen
     # übergibt die anfrage weiter das das Template
 
-    print('Startseite start')
-    print('Preis alle Artikel in der Datenbank: ', abed.getTotalPrice(), '€')
-    print('Startseite ende')
+    #print('Startseite start')
+    #print('Preis alle Artikel in der Datenbank: ', abed.getTotalPrice(), '€')
+    # print(reinhold.date())
+    #print('Startseite ende')
     temp = {
         'total_price': reinhold.germanPrice(abed.getTotalPrice())
     }
@@ -77,7 +78,10 @@ def artikel_store():
     datenbank.anweisungCommit(connection)
     # Datenbank Verbindung schließen
     datenbank.verbindungSchliessen(connection)
+
+    # return message
     flash(u'Artikel wurde erfolgreich gespeichert.', 'successe')
+
     return redirect('/artikel')
 
 
@@ -108,6 +112,7 @@ def artikel_edit_update(id):
         # Datenbank Verbindung schließen
         datenbank.verbindungSchliessen(connection)
 
+        # return message
         flash(u'Artikel wurde erfolgreich gespeichert.', 'successe')
 
         # weiterleiten an die Artikel übersicht
@@ -144,6 +149,9 @@ def artikel_delete():
     datenbank.anweisungCommit(connection)
     # Datenbank Verbindung schließen
     datenbank.verbindungSchliessen(connection)
+
+    # return message
+    flash(u'Artikel wurde erfolgreich gelöscht.', 'successe')
 
     # weiterleiten an die Artikel übersicht
     return redirect('/artikel')
@@ -198,29 +206,33 @@ def order_add():
     artikel_id = int(request.form['id'])
     count = int(request.form['count'])
     order = [
-        {'id':artikel_id, 'count': count}
+        {'id': artikel_id, 'count': count}
     ]
 
     session.modified = True
     if 'order' in session:
         session['order'] = reinhold.array_marge(session['order'], order)
         #print(isinstance(session['order'],list))
+        '''
         for value in session['order']:
             print(' inhalt: ', value)
+        '''
     else:
         session['order'] = order
 
-
     #print(session)
-    #return 'Artikel in den wahren korb'
+
+    # return message
+    flash(u'Artikel wurde erfolgreich in Wahrenkorb gelegt.', 'successe')
     return redirect('/order')
 
 
 @app.route('/car')
 def car():
     car = []
+    total_price = 0.00
     if 'order' in session:
-        #Artikeln wurder in der Session gefunden.
+        #Artikeln wurdern in der Session gefunden.
 
         for element in session['order']:
             # Datenbank Verbindung Herstellen
@@ -244,14 +256,51 @@ def car():
             car.append(temp)
 
             #gesammt preis ermitteln
-            #total = temp['count'] + temp['articel'][4]
-            print(temp)
+            total = float(temp['count']) * float(temp['articel'][4])
+            # übergibt + addiert den total an die gesammt total_price
+            total_price += total
 
-
-    print(car)
 
     # wahrenkorb anzeigen
-    return render_template('car.html', content=car)
+    return render_template('car.html', content=car, total_price=total_price)
+
+@app.route('/car/update', methods=['POST'])
+def carUpdate():
+    # Warenkorb wird aktualisiert
+    # Achtung request form liefert strings werte zurück
+    # deshalb wird es in integer umgewandelt
+    # artikel ID
+    artikel_id = int(request.form['id'])
+    # neue anzahl
+    new_count = int(request.form['count'])
+
+    # liest den ganzen wahrenkorb aus der session['order]
+    for index, item in enumerate(session['order']):
+        # wenn die gesuchte id gefunden ist
+        if item['id'] == artikel_id:
+            # schreibt die neuen anzahlt in die variable
+            session['order'][index]['count'] = new_count
+
+    flash(u'Artikel wurde erfolgreich aktualisiert.', 'successe')
+    return redirect('/car')
+
+
+
+@app.route('/car/delete', methods=['POST'])
+def carDelete():
+    # löscht einen Artikel aus dem Wahrenkorb
+    # holt die id aus den form
+    artikel_id = int(request.form['id'])
+
+    # liest den ganzen wahrenkorb aus der session['order]
+    for index, item in enumerate(session['order']):
+        # wenn die gesuchte id gefunden ist
+        if item['id'] == artikel_id:
+            # entfernt den artikel aus dem session = wahrenkorb by index
+            session['order'].pop(index)
+
+    flash(u'Artikel wurde erfolgreich aus dem Wahrenkorb entfernt.', 'successe')
+    return redirect('/car')
 
 # wahren korb erstellen
 # if 'name' in session:
