@@ -2,7 +2,7 @@
 
 1. Datenbank Ordner erstellen (wenn nicht vorhanden ist)
 
-### `datenbank/`
+### `root/datenbank/`
 
 2. Datenbank installieren
 

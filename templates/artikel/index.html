@@ -14,19 +14,22 @@
           <table class="w-full">
               <thead class="p-2 mb-7">
                 <tr class="border-b">
+                    <td class="w-1/12 text-center uppercase text-gray-400 pb-7">#</td>
                     <td class="w-2/12 text-left uppercase text-gray-400 pb-7">Artikel Nummer</td>
-                    <td class="w-3/12 text-left uppercase text-gray-400 pb-7">Titel</td>
+                    <td class="w-2/12 text-left uppercase text-gray-400 pb-7">Titel</td>
                     <td class="w-1/12 text-center uppercase text-gray-400 pb-7">Preis</td>
                     <td class="w-1/12 text-center uppercase text-gray-400 pb-7">Status</td>
                     <td class="w-1/12 text-center uppercase text-gray-400 pb-7">Anzahl</td>
-                    <td class="w-4/12"></td>
+                    <td class="w-1/12 text-center uppercase text-gray-400 pb-7">Gesammtwert</td>
+                    <td class="w-3/12"></td>
                 </tr>
               </thead>
               <tbody class="">
-
+                {% set total_price = 0 %}
                 {% for item in content %}
 
                     <tr class="hover:bg-gray-200 transition-all duration-150 ease-in-out border-b">
+                        <td class="p-2 text-center">{{loop.index}}</td>
                         <td class="p-2 text-left">{{item[1]}}</td>
                         <td class="p-2 text.left">{{item[2]}}</td>
                         <td class="p-2 text-center">{{"%.2f €" % (item[4])}}</td>
@@ -38,6 +41,8 @@
                             {% endif %}
                         </td>
                         <td class="p-2 text-center">{{item[6]}}</td>
+                        {% set total_price = total_price + 1 %}
+                        <td class="p-2 text-center">{{"%.2f €" % (item[6] * item[4])}}</td>
                         <td class="p-2 flex justify-end gap-4">
                             <a href="/artikel/{{item[0]}}" class="w-10 h-10 bg-blue-500 hover:bg-blue-700 flex justify-center items-center rounded-md text-white transition-all duration-150 ease-in-out">
                                 <i class="far fa-edit"></i>
@@ -53,6 +58,13 @@
                 {% endfor %}
 
               </tbody>
+
+              <tfoot>
+              <tr>
+                  <td colspan="8">Gesammt Lagerwert: {{total_price}}</td>
+              </tr>
+              </tfoot>
+
           </table>
       </div>
 </div>

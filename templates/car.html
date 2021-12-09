@@ -38,7 +38,21 @@
           {% endif %}
 
       </div>
-    <div class="w-5/12">
+    <div class="w-5/12 px-5">
+        <h1 class="text-2xl mb-5">Ihre Gesamtbestellung</h1>
+
+        <div class="mb-12">
+            {% for value in content %}
+                <div class="my-5 flex">
+                    <div class="w-8/12 px-3">
+                        <b class="font-bold">{{value['articel'][2]}}</b>
+                    </div>
+                    <div class="w-4/12 text-right px-3">
+                        {{"%.2f€" % value['articel'][4]}}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
         <div class="bg-white rounded-md px-5 py-7 flex justify-between">
             <div class="">
@@ -48,7 +62,7 @@
         </div>
 
         <div class="">
-            <a href="" class="w-96 block mt-7 mx-auto text-white bg-green-500 hover:bg-green-600 py-3 text-center rounded-md transition-all duration-150 ease-in-out">Bestellen</a>
+            <a href="/order/enter" class="w-96 block mt-7 mx-auto text-white bg-green-500 hover:bg-green-600 py-3 text-center rounded-md transition-all duration-150 ease-in-out">Bestellen</a>
         </div>
 
 

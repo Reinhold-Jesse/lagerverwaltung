@@ -1,0 +1,102 @@
+Aufgabenstellung
+
+= Onlineshop/Lagerverwaltung =
+
+Aufgabe type = Backend
+
+Implementiere die Software für einen Einkaufsprozess eines 
+Onlineshops. Jeder verfügbare Artikel im Onlineshop ist in einer
+Datenbank mit diesen Informationen hinterlegt:
+
+* Artikelnummer
+* Lagerbestand
+* Bezeichnung
+* Einzelpreis
+
+Zu implementieren ist: 
+
+* Hinzufügen von Artikeln, d.h. neue Ware wird geliefert
+* Entfernen von Artikeln, d.h. Ware wird verkauft
+* Löschen von Artikeln, d.h. Ware ist nicht mehr gelistet (löschen ist nicht mehr im sortiment)
+* Ändern von Artikeln, Eintrag zu einer Ware wird korrigiert
+* eine Statistik zum Warenbestand, d.h. was ist der aktuelle 
+  Warenbestand und dessen Gesamtverkaufswert
+* ein Logfile, d.h. wann wurden welche Artikel hinzugefügt,
+  geändert oder entfernt = änderungen Protokolieren / leiferung aufnehmen, Varkauf
+  
+Team: Abed, Julia, Shiva, Reinhold
+
+ 
+ 
+ 
+Onlineshop 
+
+Back-end
+
+Datenbank Tabellen
+Artikel Tabelle / Struktur
+- id , type int
+- artikel-nr ,type int
+- name, type string
+- beschreibung, type string
+- price, type float
+- status   , type bool                                               #verfügbar / nicht verfügbar
+- lagerbestand , type int
+- created_at, type date
+- updated_at, type date
+
+Logfile Tabelle
+- artikel id
+- anzahl
+- total_price ?
+- create_at
+
+''' EXTRA
+Kunden Tabelle
+- id
+- Vorname
+- Nachname
+- Adresse
+- email
+- telefon
+- zahlmethode
+
+Bestellungen Tabelle / Wahren ausgang Protokolieren
+- id
+- kunde_id
+- artikel_id
+- anzahl_artikel
+
+
+Funktion Entwickeln
+- Artikel
+
+    - index funtion (alle vorhandenen Artikeln anzeigen)
+
+    - create function (ein Partikel anlege)
+
+    - store Function (Artikel Speichern)
+
+    - edit function (Bearbeiten des Artikels)
+
+    - update function (Updates des Artikels)
+
+    - delete funtion ( Artikel löschen)
+
+
+
+Frontend
+
+Funktion 
+
+    - Artikel anzeigen = Julia
+
+    - Artikel in warenkorb legen = Shiva
+
+    - Artikel stand ändern / löschen = Abed
+
+    - Wahrenkorb anzeigen ( car.py)
+
+    - bestellung auslösen 
+
+     - bestandswert function Artikel abhiehen = Reinhold

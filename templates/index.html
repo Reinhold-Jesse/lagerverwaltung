@@ -7,15 +7,19 @@
   <div class="grid grid-cols-4 gap-4">
           <div class="w-full bg-white py-5 text-center rounded-full border shadow-inner">
               <h3 class="text-3xl mb-1 text-gray-700">{{content['total_price']}}€</h3>
-              <p>Gesamt Lagerwert</p>
+              <p>Gesamt Bestellwert</p>
           </div>
           <div class="w-full bg-white py-5 text-center rounded-full border shadow-inner">
-              <h3 class="text-3xl mb-1 text-gray-700">0</h3>
+              <h3 class="text-3xl mb-1 text-gray-700">{{content['total_articls']}}</h3>
               <p>Artikel Anzahl im Lager</p>
           </div>
           <div class="w-full bg-white py-5 text-center rounded-full border shadow-inner">
-              <h3 class="text-3xl mb-1 text-gray-700">0</h3>
+              <h3 class="text-3xl mb-1 text-gray-700">{{content['total_logfile']}}</h3>
               <p>Erfasste entnahmen</p>
+          </div>
+          <div class="w-full bg-white py-5 text-center rounded-full border shadow-inner">
+              <h3 class="text-3xl mb-1 text-gray-700">{{content['total_orders']}}</h3>
+              <p>Bestellung erfasst</p>
           </div>
   </div>
 </div>
